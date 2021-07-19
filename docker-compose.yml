@@ -1,0 +1,22 @@
+version: "3.7"
+services:
+    api:
+        build: .
+        restart: always
+        ports:
+            - "9000:9000"
+        environment: 
+            MONGO_URL: mongodb://${DATABASE_USER}:${DATABASE_PASSWORD}@mongo:27017
+            SESSION_SECRET: ${SESSION_SECRET}
+            ADMIN_USER: ${ADMIN_USER}
+            ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+        depends_on:
+            - mongo
+    mongo:
+        image: mongo:latest
+        restart: always
+        volumes:
+            - ./mongo-db:/data/db
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: ${DATABASE_USER}
+            MONGO_INITDB_ROOT_PASSWORD: ${DATABASE_PASSWORD}
