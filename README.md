@@ -5,7 +5,7 @@ Simple storage API with authentication
 - Clone repository 
 
 	`git clone https://github.com/j-zumaran/mongo-storage.git`
-- Create .env file for docker-composer. See [example] (example.env).
+- Create .env file for docker-composer. See [example](example.env).
 - Run project with 
 
 	` docker-compose up --build`
@@ -32,6 +32,7 @@ Simple storage API with authentication
 |`/token`| POST | - | Randomly generates user token |
 |`/token/delete/:id`| POST | Token id | Deletes token by id |
 |`/objects/all`|  GET | - | Retrieves all created objects from all users |
+|`/contacts/all`|  GET | - | Retrieves all created contacts from all users |
 
 ## Database operations
 These operations are done within the current logged user context.
