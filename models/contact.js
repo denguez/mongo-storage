@@ -5,7 +5,7 @@ const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"
 var ContactSchema = new mongoose.Schema({
     name: { type: String, required: true },
     user: { type: String, required: true },
-    timestamp: { type: Date, required: true },
+    timestamp: { type: Date, required: true, default: Date.now() },
     email: {
         type: String, required: true,
         validate: {

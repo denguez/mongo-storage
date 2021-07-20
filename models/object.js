@@ -3,7 +3,7 @@ var mongoose = require('mongoose')
 var ObjectSchema = new mongoose.Schema({
     name: { type: String, required: true },
     user: { type: String, required: true },
-    timestamp: { type: Date, required: true },
+    timestamp: { type: Date, required: true, default: Date.now() },
     data: { type: JSON, required: false },
 })
 
