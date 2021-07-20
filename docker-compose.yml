@@ -10,6 +10,9 @@ services:
             SESSION_SECRET: ${SESSION_SECRET}
             ADMIN_USER: ${ADMIN_USER}
             ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+            EMAIL_USER: ${EMAIL_USER}
+            EMAIL_PASSWORD: ${EMAIL_PASSWORD}
+            EMAIL_FROM: ${EMAIL_FROM}
         depends_on:
             - mongo
     mongo:
