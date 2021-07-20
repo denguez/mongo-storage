@@ -1,7 +1,7 @@
 var mongoose = require('mongoose')
 
 var TokenSchema = new mongoose.Schema({
-    uuid: { type: String, required: true },
+    uuid: { type: String, unique: true, required: true },
     user: { type: String, required: true },
     timestamp: { type: Date, required: true },
 })
