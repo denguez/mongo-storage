@@ -1,6 +1,6 @@
 var User = require('../models/user');
 var passport = require('passport');
-const { LoggedIn } = require('../middleware/user');
+const { LoggedIn, LoggedInAdmin } = require('../middleware/user');
 const { OK, BadRequest } = require('../scripts/http')
 
 module.exports = function (app) {
@@ -29,5 +29,11 @@ module.exports = function (app) {
                 OK(res, 'Successfully logged out', username)
             }
         });
+    })
+    app.get('/users', LoggedInAdmin, (_, res) => {
+        User.find((err, users) => {
+            if (err) BadRequest(res, err)
+            else res.json(users)
+        })
     })
 }
