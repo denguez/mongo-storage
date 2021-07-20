@@ -4,7 +4,7 @@ var TokenSchema = new mongoose.Schema({
     name: { type: String, required: true },
     uuid: { type: String, unique: true, required: true },
     user: { type: String, required: true },
-    timestamp: { type: Date, required: true },
+    timestamp: { type: Date, required: true, default: Date.now() },
 })
 
 TokenSchema.methods.toJSON = function () {
