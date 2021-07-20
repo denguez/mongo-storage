@@ -5,10 +5,12 @@ const { OK, BadRequest } = require('../scripts/http')
 
 module.exports = function (app) {
     app.post('/register', (req, res) => {
-        User.register({ username: req.body.username }, req.body.password, (err, user) => {
-            if (err) BadRequest(res, err)
-            else OK(res, "Succesfully registered", user.username)
-        })
+        let user = req.body
+        User.register({ username: user.username, email: user.email }, user.password,
+            (err, newUser) => {
+                if (err) BadRequest(res, err)
+                else OK(res, "Succesfully registered", newUser.username)
+            })
     })
     app.post('/login', passport.authenticate('local'), (req, res) => {
         User.findOne({ username: req.user.username }, (err, user) => {
