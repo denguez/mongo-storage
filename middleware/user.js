@@ -1,4 +1,5 @@
 const { ADMIN } = require('../models/user') 
+const { Unauthenticated } = require('../scripts/http');
 module.exports = {
     Admin(req, res, next) {
         if (req.user.username == ADMIN) next()
@@ -6,14 +7,14 @@ module.exports = {
     },
     LoggedIn(req, res, next) {
         if (req.user) next()
-        else res.status(403).send("Unauthenticated user")
+        else Unauthenticated(res)
     },
     LoggedInAdmin(req, res, next) {
         if (req.user) {
             if (req.user.username == ADMIN) next()
             else res.status(403).send("Unprivileged user")
         } else {
-            res.status(403).send("Unauthenticated user")
+            Unauthenticated(res)
         }
     }
 }
