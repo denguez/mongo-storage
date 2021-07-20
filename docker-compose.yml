@@ -9,6 +9,7 @@ services:
             MONGO_URL: mongodb://${DATABASE_USER}:${DATABASE_PASSWORD}@mongo:27017
             SESSION_SECRET: ${SESSION_SECRET}
             ADMIN_USER: ${ADMIN_USER}
+            ADMIN_EMAIL: ${ADMIN_EMAIL}
             ADMIN_PASSWORD: ${ADMIN_PASSWORD}
             EMAIL_USER: ${EMAIL_USER}
             EMAIL_PASSWORD: ${EMAIL_PASSWORD}

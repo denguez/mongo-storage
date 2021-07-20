@@ -23,7 +23,10 @@ User.createAdmin = function () {
     User.findOne({ username: User.ADMIN }, (err, user) => {
         if (err) throw err
         else if (!user) {
-            User.register({ username: User.ADMIN }, process.env.ADMIN_PASSWORD, (err, _) => {
+            User.register({ 
+                username: User.ADMIN, 
+                email: process.env.ADMIN_EMAIL 
+            }, process.env.ADMIN_PASSWORD, (err, _) => {
                 if (err) throw err
             })
         }
