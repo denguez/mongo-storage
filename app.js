@@ -114,7 +114,7 @@ app.post('/logout', User.LoggedIn, (req, res) => {
         }
     });
 })
-app.post('/register', User.LoggedIn, User.Admin, (req, res) => {
+app.post('/register', User.LoggedInAdmin, (req, res) => {
     User.register({ username: req.body.username }, req.body.password, (err, user) => {
         if (err) BadRequest(res, err)
         else OK(res, "Succesfully registered", user)
@@ -122,29 +122,32 @@ app.post('/register', User.LoggedIn, User.Admin, (req, res) => {
 })
 
 // Token
-app.get('/tokens', User.LoggedIn, User.Admin, (_, res) => {
-    User.find(
-        { username: { $ne: User.ADMIN } },
-        (err, users) => handleJson(res, err, users.map(u => u.username))
-    )
+var Tokens = require('./models/token')
+app.get('/tokens/all', User.LoggedInAdmin, (_, res) => {
+    Tokens.find((err, objs) => handleJson(res, err, objs.map(o => o.toObject())))
 })
-app.post('/token', User.LoggedIn, User.Admin, (_, res) => {
-    let secret = uuid()
-    User.register(
-        { username: `token-${uuid()}` }, secret,
-        (err, user) => handleCreated(res, err, {
-            token: user.username,
-            secret: secret,
-        })
-    )
+app.post('/token/create/:user', User.LoggedInAdmin, (req, res) => {
+    const { user } = req.params
+    let token = {
+        uuid: uuid(),
+        timestamp: Date.now(),
+        user: user
+    }
+    Tokens.create(token, (err, created) => handleCreated(res, err, created))
 })
-app.delete('/token/delete/:id', User.LoggedIn, User.Admin, (req, res) => {
-    let { id } = req.params
-    User.deleteOne({ username: id }, (err, result) => {
+app.delete('/token/delete/:uuid', User.LoggedInAdmin, (req, res) => {
+    const { uuid } = req.params
+    User.deleteOne({ uuid: uuid }, (err, result) => {
         if (err) BadRequest(res, err)
         else if (result.deletedCount == 0) NotFound(res)
-        else OK(res, "Successfully deleted token", id)
+        else OK(res, "Successfully deleted token", uuid)
     });
+})
+app.get('/tokens', User.LoggedIn, (req, res) => {
+    Tokens.find(
+        { user: req.user.username },
+        (err, objs) => handleJson(res, err, objs)
+    )
 })
 
 // Methods
@@ -199,7 +202,7 @@ function Delete(path, model) {
     app.delete(`${path}/:id`, User.LoggedIn, (req, res) => {
         let { id } = req.params
         model.findOneAndRemove(
-            { _id: id, user: req.user.username }, 
+            { _id: id, user: req.user.username },
             (err, deleted) => handleDelete(res, err, deleted)
         )
     })
