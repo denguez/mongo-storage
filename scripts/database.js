@@ -1,11 +1,11 @@
 const http = require('./http')
 
 module.exports = {
-    create(model, response, object, callback) {
+    create(model, request, response, object, callback) {
         model.create(object, (error, created) => {
             if (error) http.BadRequest(response, error)
             else {
-                if (callback) callback(created)
+                if (callback) callback(request, created)
                 http.OK(response, "Successfully created", created)
             }
         })

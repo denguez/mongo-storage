@@ -9,7 +9,7 @@ module.exports = function (app) {
     // Create token by username
     app.post('/admin/token/user/:user', LoggedInAdmin, (req, res) => {
         const { user } = req.params
-        db.create(Tokens, res, {
+        db.create(Tokens, req, res, {
             user: user,
             uuid: uuid(),
             name: "test",
@@ -39,7 +39,7 @@ module.exports = function (app) {
     // Create token with current user and name
     app.post('/token/:name', LoggedIn, (req, res) => {
         const { name } = req.params
-        db.create(Tokens, res, {
+        db.create(Tokens, req, res, {
             name: name,
             uuid: uuid(),
             timestamp: Date.now(),

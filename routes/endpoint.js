@@ -21,7 +21,7 @@ module.exports = function (app, config) {
         let obj = req.body
         obj.timestamp = Date.now()
         obj.user = req.user.username
-        db.create(config.model, res, obj, config.onCreated)
+        db.create(config.model, req, res, obj, config.onCreated)
     })
     // Update
     app.put(`${config.path}/:id`, Token, (req, res) => {
