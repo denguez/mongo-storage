@@ -5,6 +5,7 @@ var cors = require('cors')
 var passport = require('passport');
 var session = require('express-session');
 var LocalStrategy = require('passport-local').Strategy;
+var mail = require('./scripts/mail')
 
 // Server
 const PORT = 9000
@@ -44,10 +45,22 @@ app.get('/', (_, res) => res.send("CTMRE"));
 // Routes
 require('./routes/user')(app)
 require('./routes/token')(app)
-
-var endpoints = require('./routes/endpoints')
-endpoints.build(app, '/object', require('./models/object'))
-endpoints.build(app, '/contact', require('./models/contact'))
+require('./routes/endpoint')(app, {
+    path: "/object",
+    model: require('./models/object')
+})
+require('./routes/endpoint')(app, {
+    path: "/contact",
+    model: require('./models/contact'),
+    onCreated(req, contact) {
+        mail(req.user.email, {
+            subject: "New contact saved",
+            text: `Name: ${contact.name}\n`
+                + `Email: ${contact.email}\n`
+                + `Message: ${contact.message}`
+        })
+    }
+})
 
 // Start express
 app.listen(PORT, () => {
