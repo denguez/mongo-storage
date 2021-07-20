@@ -36,4 +36,13 @@ User.LoggedIn = function (req, res, next) {
     else res.status(403).send("Unauthenticated user")
 }
 
+User.LoggedInAdmin = function (req, res, next) {
+    if (req.user) {
+        if (req.user.username == User.ADMIN) next()
+        else res.status(403).send("Unprivileged user")
+    } else {
+        res.status(403).send("Unauthenticated user")
+    }
+}
+
 module.exports = User
