@@ -114,7 +114,7 @@ app.post('/logout', User.LoggedIn, (req, res) => {
         }
     });
 })
-app.post('/register', User.LoggedInAdmin, (req, res) => {
+app.post('/register', (req, res) => {
     User.register({ username: req.body.username }, req.body.password, (err, user) => {
         if (err) BadRequest(res, err)
         else OK(res, "Succesfully registered", user)
